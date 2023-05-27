@@ -7,7 +7,9 @@ const displayController = (() => {
     const {array} = gameBoard;
     const displayWrapper = document.querySelector(".grid-wrapper")
     let cellCounter = 0;
-    const displayGrid = () => {array.forEach((item) => {
+    const displayGrid = () => {
+        displayWrapper.innerHTML=""
+        array.forEach((item) => {
         const cell = document.createElement("div");
         cell.setAttribute("class", "cell");
         cell.setAttribute("data-id", cellCounter);
@@ -37,9 +39,11 @@ const gameController = (square) => {
     };
     const placeMarker = () => {
         const cell = document.querySelector(`[data-id = "${square}"]`)
-        return cell;
+        array[square] = activePlayer.token
+        displayController.displayGrid()
+        switchTurns()
     };
     return {placeMarker}
 };
 
-console.log(gameController(1).placeMarker())
+gameController(2).placeMarker()
