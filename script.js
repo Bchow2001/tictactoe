@@ -1,5 +1,5 @@
 const gameBoard = (() => {
-    const array = ["X", "O", "X", "X", "O", "O", "O", "X", "X"];
+    const array = new Array(9).fill(null);
     return {array};
 })();
 
@@ -10,7 +10,7 @@ const displayController = (() => {
     const displayGrid = () => {array.forEach((item) => {
         const cell = document.createElement("div");
         cell.setAttribute("class", "cell");
-        cell.setAttribute("data-key", cellCounter);
+        cell.setAttribute("data-id", cellCounter);
         cellCounter += 1;
         cell.innerText = item;
         displayWrapper.appendChild(cell);
@@ -20,21 +20,26 @@ const displayController = (() => {
 
 displayController.displayGrid();
 
-const players = (name, name2) => {
-    const playerOne = {name, token: "X"};
-    const playerTwo = {name2, token: "O"};
-    const playerList = [playerOne, playerTwo];
-    return {playerList};
+const playerList = (() => {
+    const playerOne = {name: "Player One", token: "X"};
+    const playerTwo = {name: "Player Two", token: "O"};
+    const players = [playerOne, playerTwo];
+    return {players};
+})();
+
+
+const gameController = (square) => {
+    const {array} = gameBoard;
+    const {players} = playerList;
+    let activePlayer = players[0];
+    const switchTurns = () => { 
+        activePlayer = activePlayer === players[0] ? players[1] : players [0];
+    };
+    const placeMarker = () => {
+        const cell = document.querySelector(`[data-id = "${square}"]`)
+        return cell;
+    };
+    return {placeMarker}
 };
 
-console.log(players("Bryan", "Ryan").playerList)
-
-const gameController = (name, name2) => {
-    const {array} = gameBoard;
-    const {playerList} = players();
-    const {displayController} = displayController;
-    let activePlayer = playerList[0]
-    const switchTurn = () => {
-
-    }
-}
+console.log(gameController(1).placeMarker())
