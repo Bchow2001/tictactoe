@@ -38,12 +38,36 @@ const gameController = (() => {
     const switchTurns = (() => { 
         activePlayer = activePlayer === players[0] ? players[1] : players [0];
     });
+    const winChecker =(() => {
+        const winConditions = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6],
+        ]
+        let roundWon = false
+        winConditions.forEach((item) => {
+            const a = array[item[0]];
+            const b = array[item[1]];
+            const c = array[item[2]];
+            if (a === b && b === c && a !== null) {
+                roundWon = true;
+            }
+        })
+        return {roundWon};
+    });
     displayWrapper.addEventListener("click", (e) => {
         if (e.target && e.target.matches(".cell")&& array[e.target.dataset.key] === null) {
             array[e.target.dataset.key] = activePlayer.token;
             displayController.displayGrid();
+            if (winChecker().roundWon === true) {
+                alert(`${activePlayer.token} Won`)
+            }
             switchTurns();
         };
 })})();
 
-gameController;
