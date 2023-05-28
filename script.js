@@ -1,3 +1,5 @@
+const displayWrapper = document.querySelector(".grid-wrapper")
+
 const gameBoard = (() => {
     const array = new Array(9).fill(null);
     return {array};
@@ -5,14 +7,13 @@ const gameBoard = (() => {
 
 const displayController = (() => {
     const {array} = gameBoard;
-    const displayWrapper = document.querySelector(".grid-wrapper")
-    let cellCounter = 0;
     const displayGrid = () => {
         displayWrapper.innerHTML=""
+        let cellCounter = 0;
         array.forEach((item) => {
         const cell = document.createElement("div");
         cell.setAttribute("class", "cell");
-        cell.setAttribute("data-id", cellCounter);
+        cell.setAttribute("data-key", cellCounter);
         cellCounter += 1;
         cell.innerText = item;
         displayWrapper.appendChild(cell);
@@ -30,20 +31,19 @@ const playerList = (() => {
 })();
 
 
-const gameController = (square) => {
+const gameController = (() => {
     const {array} = gameBoard;
     const {players} = playerList;
     let activePlayer = players[0];
-    const switchTurns = () => { 
+    const switchTurns = (() => { 
         activePlayer = activePlayer === players[0] ? players[1] : players [0];
-    };
-    const placeMarker = () => {
-        const cell = document.querySelector(`[data-id = "${square}"]`)
-        array[square] = activePlayer.token
-        displayController.displayGrid()
-        switchTurns()
-    };
-    return {placeMarker}
-};
+    });
+    displayWrapper.addEventListener("click", (e) => {
+        if (e.target && e.target.matches(".cell")&& array[e.target.dataset.key] === null) {
+            array[e.target.dataset.key] = activePlayer.token;
+            displayController.displayGrid();
+            switchTurns();
+        };
+})})();
 
-gameController(2).placeMarker()
+gameController;
