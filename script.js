@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const displayWrapper = document.querySelector(".grid-wrapper")
 
 const gameBoard = (() => {
@@ -9,35 +10,37 @@ const displayController = (() => {
     const {array} = gameBoard;
     const displayGrid = () => {
         displayWrapper.innerHTML=""
-        let cellCounter = 0;
+        let _cellCounter = 0;
         array.forEach((item) => {
         const cell = document.createElement("div");
         cell.setAttribute("class", "cell");
-        cell.setAttribute("data-key", cellCounter);
-        cellCounter += 1;
+        cell.setAttribute("data-key", _cellCounter);
+        _cellCounter += 1;
         cell.innerText = item;
         displayWrapper.appendChild(cell);
-    })};
+    })}
     return {displayGrid};
 })();
 
-displayController.displayGrid();
-
 const playerList = (() => {
-    const playerOne = {name: "Player One", token: "X"};
-    const playerTwo = {name: "Player Two", token: "O"};
-    const players = [playerOne, playerTwo];
+    const _playerOne = {name: "Player One", token: "X"};
+    const _playerTwo = {name: "Player Two", token: "O"};
+    const players = [_playerOne, _playerTwo];
     return {players};
 })();
 
 
+
 const gameController = (() => {
+    displayController.displayGrid();
     const {array} = gameBoard;
     const {players} = playerList;
     let activePlayer = players[0];
+
     const switchTurns = (() => { 
         activePlayer = activePlayer === players[0] ? players[1] : players [0];
     });
+
     const winChecker =(() => {
         const winConditions = [
             [0,1,2],
@@ -49,25 +52,94 @@ const gameController = (() => {
             [0,4,8],
             [2,4,6],
         ]
-        let roundWon = false
-        winConditions.forEach((item) => {
-            const a = array[item[0]];
-            const b = array[item[1]];
-            const c = array[item[2]];
+        let roundWon = "ongoing"
+        for (let i = 0; i < winConditions.length; i++) {
+            const a = array[winConditions[i][0]];
+            const b = array[winConditions[i][1]];
+            const c = array[winConditions[i][2]];
             if (a === b && b === c && a !== null) {
-                roundWon = true;
-            }
-        })
-        return {roundWon};
+                roundWon = "win";
+                break;
+            }};
+        if (array.every(item => item !== null) && roundWon === "ongoing") {
+            roundWon = "tie"
+        };
+        return {roundWon}
     });
-    displayWrapper.addEventListener("click", (e) => {
-        if (e.target && e.target.matches(".cell")&& array[e.target.dataset.key] === null) {
+
+    const computerRandomMove =(() => {
+        const _getRandomNumber = () => Math.floor((Math.random() * 9));
+        const _randomMove = () => {
+            let _randomNumber = _getRandomNumber();
+            if (array[_randomNumber] === null){
+                array[_randomNumber] = activePlayer.token
+                displayController.displayGrid();
+            } else {
+                _randomNumber = _getRandomNumber();
+                _randomMove();
+            }
+        };
+        _randomMove();
+    });
+
+    const displayModal = (() => {
+        const modal = document.querySelector(".result-modal");
+        const span = document.querySelector(".close");
+        const modalContent = document.querySelector(".modal-content")
+        const message = document.createElement("div")
+        if (winChecker().roundWon === "win") {
+            message.innerText = "";
+            message.innerText = `${activePlayer.token} won`;
+        } else if (winChecker().roundWon === "tie") {
+            message.innerText = "";
+            message.innerText ="Tie";
+        }
+        modalContent.appendChild(message)
+        modal.style.display = "block"
+        span.onclick = () => {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+        }      
+    });
+
+    const restart = (() => {
+        
+    })
+
+    const addToken = (e) => {
+        if (e.target && e.target.matches(".cell") && array[e.target.dataset.key] === null) {
             array[e.target.dataset.key] = activePlayer.token;
             displayController.displayGrid();
-            if (winChecker().roundWon === true) {
-                alert(`${activePlayer.token} Won`)
+            if (winChecker().roundWon === "win"){
+                displayModal();
+                displayWrapper.removeEventListener("click", addToken)
+                return;
+            } 
+            if (winChecker().roundWon === "tie") {
+                displayModal();
+                displayWrapper.removeEventListener("click", addToken)
+                return;
+            }
+            switchTurns();
+            computerRandomMove();
+            if (winChecker().roundWon === "win"){
+                displayModal();
+                displayWrapper.removeEventListener("click", addToken)
+                return;
+            } 
+            if (winChecker().roundWon === "tie") {
+                displayModal();
+                displayWrapper.removeEventListener("click", addToken)
+                return;
             }
             switchTurns();
         };
-})})();
+    };
+
+    displayWrapper.addEventListener("click", addToken)
+})();
 
