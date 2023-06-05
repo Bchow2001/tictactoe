@@ -6,18 +6,48 @@ body {
     padding: 0;
 }
 
-div {
-    border: 2px red solid;
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 100px 1fr 40px;
 }
 
-.wrapper {
-    height: 100%;
-    display: grid;
-    grid-template-rows: 50px 1fr 50px;
+/* div {
+    border: 2px red solid;
+} */
+
+/* Title Styles */
+.title-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5%;
+    background-color: rgba(129,0,0,0.99);
 }
+
+#title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    color: rgb(236,143,0);
+}
+
+#logo {
+    border-radius: 50%;
+    height: 85px;
+    width: 85px;
+}
+
+/* Content Wrapper */
 
 .content {
-    padding: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
 }
 
 .grid-wrapper {
@@ -31,7 +61,41 @@ div {
    display: grid;
    justify-content: center;
    align-items: center;
+   border: 2px red solid;
 }
+
+.restart-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Footer Styles */
+
+.footer-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: rgb(100, 0, 0);
+}
+
+#copyright {
+    color: rgb(236,143,0);
+    font-weight: 530;
+}
+
+#github{
+    height: 22px;
+    width: auto;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+#github:hover{
+    transform: rotate(360deg);
+    transition: all 0.3s ease-in-out 0s;
+}
+
 
 /* Modal Styles */
 /* The Modal (background) */
@@ -54,13 +118,25 @@ div {
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 30%; /* Could be more or less, depending on screen size */
+  width: 15%; /* Could be more or less, depending on screen size */
+  height: 10%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 15px 1fr;
+  align-items: center;
+}
+
+.message-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
 }
 
 /* The Close Button */
 .close {
   color: #aaa;
-  float: right;
+  justify-self: end;
   font-size: 28px;
   font-weight: bold;
 }

@@ -33,6 +33,7 @@ const playerList = (() => {
 
 const gameController = (() => {
     displayController.displayGrid();
+    const restartBtn = document.querySelector("#restart");
     const {array} = gameBoard;
     const {players} = playerList;
     let activePlayer = players[0];
@@ -86,12 +87,12 @@ const gameController = (() => {
         const modal = document.querySelector(".result-modal");
         const span = document.querySelector(".close");
         const modalContent = document.querySelector(".modal-content")
-        const message = document.createElement("div")
+        const message = document.querySelector(".message-div")
         if (winChecker().roundWon === "win") {
-            message.innerText = "";
-            message.innerText = `${activePlayer.token} won`;
+            message.innerHTML = "";
+            message.innerText = `${activePlayer.token} Won`;
         } else if (winChecker().roundWon === "tie") {
-            message.innerText = "";
+            message.innerHTML = "";
             message.innerText ="Tie";
         }
         modalContent.appendChild(message)
@@ -107,8 +108,13 @@ const gameController = (() => {
     });
 
     const restart = (() => {
-        
-    })
+        array.fill(null);
+        displayController.displayGrid();
+        displayWrapper.addEventListener("click", addToken);
+        [activePlayer] = players;
+    });
+
+    
 
     const addToken = (e) => {
         if (e.target && e.target.matches(".cell") && array[e.target.dataset.key] === null) {
@@ -140,6 +146,8 @@ const gameController = (() => {
         };
     };
 
-    displayWrapper.addEventListener("click", addToken)
+    restartBtn.addEventListener("click", restart);
+    displayWrapper.addEventListener("click", addToken);
+
 })();
 

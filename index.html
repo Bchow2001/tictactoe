@@ -10,21 +10,28 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="header">Tic Tac Toe</div>
+        <div class="title-wrapper">
+            <div id="title">Bryan's Cool Tic Tac Toe Machine</div>
+            <img id="logo" src="resources/Logo.jpg" alt="Bryan's Face">
+        </div>
         <div class="content">
             <div class="grid-wrapper">
                 
             </div>
             <div class="restart-button">
-                <button>Restart</button>
+                <button id="restart">Restart</button>
             </div>
         </div>
-        <div class="footer"></div>
+        <div class="footer-wrapper">
+            <div id="copyright">Copyright © 2023 Bryan Chow/Liberty Inc.</div>
+            <a href="https://github.com/Bchow2001"><img id="github" src="resources/github-mark-white.svg" alt="Github Logo"></a>
+        </div>
     </div>
     <!-- Modal -->
     <div id="result-modal" class="result-modal">
         <div class="modal-content">
           <div class="close">&times;</div>
+          <div class="message-div"></div>
         </div>
       </div>
 </body>
